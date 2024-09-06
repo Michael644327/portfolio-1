@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>計算機練習</title>
+    <link rel="stylesheet" href="/css/Bootstrap_style.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+        #calculator {
+            border: 1px solid #000;
+            width: 300px;
+            padding: 24px;
+            background-color: #ccc;
+        }
+
+        #display {
+            width: 100%;
+        }
+
+        .buttons {
+            padding-top: 12px;
+
+            text-align: center;
+        }
+
+        button {
+            width: 80px;
+            height: 32px;
+            border-radius: 5px;
+            margin: 2px auto;
+        }
+
+        #equals {
+            background-color: aqua;
+        }
+    </style>
+</head>
+
+<body class="d-flex flex-column h-100">
+
+    <!--top nav menu-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="./index.html">首頁</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="../index.html">首頁</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/javascripts/index.html">javascript練習</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/bootstrap/index.html">BootStrap練習</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-2 sidebar">
+                <ul class="sidelist">
+                    <li><a href="./calacular.html">計算機</a></li>
+                    <li><a href="./toDoList.html">待辦清單</a></li>
+                </ul>
+            </div>
+            <div class="col-10 main-container">
+
+                <body>
+                    <div id="calculator">
+                        <input id="display" disabled />
+                        <br>
+                        <div class="buttons">
+                            <button class="number">7</button>
+                            <button class="number">8</button>
+                            <button class="number">9</button>
+                            <button class="number">4</button>
+                            <button class="number">5</button>
+                            <button class="number">6</button>
+                            <button class="number">1</button>
+                            <button class="number">2</button>
+                            <button class="number">3</button>
+                            <br />
+                            <button class="number">0</button>
+                            <br>
+                            <button class="operator">+</button>
+                            <button class="operator">-</button>
+                            <button id="reset">Reset</button>
+                            <button class="operator">*</button>
+                            <button class="operator">/</button>
+                            <button id="equals">=</button>
+                        </div>
+                        <!-- <br> -->
+                        <!-- <p id="display2">aaa</p> -->
+                        <!-- <input id="display2" disabled /> -->
+                    </div>
+                </body>
+                <footer class="footer mt-auto py-3 bg-dark text-white text-center fixed-bottom">本網頁為練習使用
+                </footer>
+                <script>
+                    let num_1 = "";
+                    let num_2 = "";
+                    let oper = "";
+
+                    const buttons = document.querySelectorAll('.number');
+                    for (let button of buttons) {
+                        button.addEventListener('click', function () {
+                            if (oper === "") {
+                                num_1 = num_1 + this.innerText;
+                                display.value = num_1;
+                            }
+                            else {
+                                num_2 = num_2 + this.innerText;
+                                display.value = num_2;
+                            }
+                        })
+                    }
+
+                    const op_buttons = document.querySelectorAll('.operator');
+                    for (let button of op_buttons) {
+                        button.addEventListener('click', function () {
+                            if (num_1 !== "") {
+                                oper = this.innerText;
+                            }
+                        })
+                    }
+                    equals.addEventListener('click', function () {
+                        let result = 0;
+                        num_1 = parseInt(num_1);
+                        num_2 = parseInt(num_2);
+
+                        switch (oper) {
+                            case '+':
+                                // display.value = num_1 + num_2;
+                                result = num_1 + num_2;
+                                break
+                            case '-':
+                                result = num_1 - num_2;
+                                break
+                            case '*':
+                                result = num_1 * num_2;
+                                break
+                            case '/':
+                                result = num_1 / num_2;
+                                break
+                        };
+                        // if (oper === '+') {
+                        //     result = num_1 + num_2;
+                        // } else if (oper === '-') {
+                        //     result = num_1 - num_2;
+                        // } else if (oper === '*') {
+                        //     result = num_1 * num_2;
+                        // } else if (oper === '/') {
+                        //     result = num_1 / num_2;
+                        // }
+                        display.value = mIB(result);
+                        num_1 = result;
+                        num_2 = "";
+                        oper = "";
+                    });
+
+                    function mIB(result) {
+                        result = result.toString();
+                        let array = result.split('');
+                        array = array.reverse();
+                        let result2 = [];
+                        for (let i = 0; i < array.length; i++) {
+                            if (i > 0 && i % 3 === 0) {
+                                result2.push(',');
+                            }
+                            result2.push(array[i]);
+                        }
+                        result2 = result2.reverse();
+                        result2 = result2.join('');
+                        return result2;
+                    };
+                    reset.addEventListener('click', function () {
+                        display.value = "";
+                        num_1 = "";
+                        num_2 = "";
+                        oper = "";
+                    });
+                </script>
+
+</html>
